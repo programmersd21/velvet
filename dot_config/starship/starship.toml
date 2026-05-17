@@ -1,0 +1,100 @@
+# ┌──────────────────────────────────────────────────────────────────────────────┐
+# │  velvet noir · starship.toml                                                │
+# └──────────────────────────────────────────────────────────────────────────────┘
+
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+[](color_user)\
+$username\
+[](bg:color_dir fg:color_user)\
+$directory\
+[](fg:color_dir bg:color_git)\
+$git_branch\
+$git_status\
+[](fg:color_git bg:color_lang)\
+$nodejs\
+$rust\
+$golang\
+$python\
+[](fg:color_lang bg:color_time)\
+$time\
+[ ](fg:color_time)\
+$character"""
+
+palette = 'matugen'
+
+[palettes.matugen]
+color_user = "#bb9af7"
+color_dir  = "#769ff0"
+color_git  = "#394260"
+color_lang = "#212736"
+color_time = "#1d2230"
+fg_dark    = "#1a1b26"
+fg_light   = "#a3aed2"
+fg_accent  = "#769ff0"
+fg_error   = "#f7768e"
+
+[os]
+disabled = true
+
+[username]
+show_always = true
+style_user = "bg:color_user fg:fg_dark"
+style_root = "bg:color_user fg:fg_dark"
+format = '[🎗️  $user ]($style)'
+
+[directory]
+style = "fg:fg_dark bg:color_dir"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[git_branch]
+symbol = ""
+style = "bg:color_git"
+format = '[[ $symbol $branch ](fg:fg_accent bg:color_git)]($style)'
+
+[git_status]
+style = "bg:color_git"
+format = '[[($all_status$ahead_behind )](fg:fg_accent bg:color_git)]($style)'
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇡${ahead_count}⇣${behind_count}"
+modified = "~${count}"
+staged = "+${count}"
+untracked = "?${count}"
+
+[nodejs]
+symbol = ""
+style = "bg:color_lang"
+format = '[[ $symbol ($version) ](fg:fg_accent bg:color_lang)]($style)'
+
+[rust]
+symbol = ""
+style = "bg:color_lang"
+format = '[[ $symbol ($version) ](fg:fg_accent bg:color_lang)]($style)'
+
+[golang]
+symbol = ""
+style = "bg:color_lang"
+format = '[[ $symbol ($version) ](fg:fg_accent bg:color_lang)]($style)'
+
+[python]
+symbol = ""
+style = "bg:color_lang"
+format = '[[ $symbol ($version) ](fg:fg_accent bg:color_lang)]($style)'
+
+[time]
+disabled = false
+time_format = "%R"
+style = "bg:color_time"
+format = '[[  $time ](fg:fg_light bg:color_time)]($style)'
+
+[character]
+disabled = false
+success_symbol = '[󰄛](bold fg:fg_accent)'
+error_symbol = '[󰄛](bold fg:fg_error)'
+
+[line_break]
+disabled = false

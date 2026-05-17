@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# ┌──────────────────────────────────────────────────────────────────────────────┐
+# │  velvet noir · wallpaper picker                                             │
+# │  Rofi grid-based image selector → awww + matugen                            │
+# └──────────────────────────────────────────────────────────────────────────────┘
+
+WALLPAPER_DIR="$HOME/.config/wallpapers"
+
+if [ ! -d "$WALLPAPER_DIR" ]; then
+    mkdir -p "$WALLPAPER_DIR"
+    notify-send "Wallpaper Picker" "Add images to $WALLPAPER_DIR" -i dialog-information
+    exit 1
+fi
+
+SELECTED=$(while read -r file; do
+    relative=${file#$WALLPAPER_DIR/}
+    printf "%s\0icon\x1f%s\n" "$relative" "$file"
+done < <(find "$WALLPAPER_DIR" -type f \( -name "*.jpg" -o -name "*.png" -o -name "*.webp" -o -name "*.jpeg" -o -name "*.gif" \) | sort) | rofi -dmenu -i -p "WALL" -show-icons -theme-str '
+    window { width: 1100px; height: 850px; border-radius: 24px; border: 2px 0 0 0; border-color: @accent; }
+    mainbox { padding: 32px; }
+    inputbar { margin: 0 0 24px 0; padding: 10px 16px; background-color: rgba(255,255,255,0.03); border-radius: 12px; }
+    entry { placeholder: "Search wallpapers…"; }
+    listview { columns: 3; lines: 2; spacing: 20px; cycle: false; dynamic: true; layout: vertical; fixed-columns: true; }
+    element { orientation: vertical; padding: 16px; border-radius: 16px; spacing: 12px; background-color: transparent; }
+    element selected { background-color: rgba(180,142,255,0.12); border: 1px; border-color: rgba(180,142,255,0.25); }
+    element selected element-text { text-color: @accent; }
+    element-icon { size: 280px; horizontal-align: 0.5; border-radius: 12px; }
+    element-text { horizontal-align: 0.5; font: "Inter Medium 11"; }
+')
+
+if [ -z "$SELECTED" ]; then
+    exit 0
+fi
+
+FULL_PATH="$WALLPAPER_DIR/$SELECTED"
+
+# Sync wallpaper and colors via theme-switch.sh
+bash "$HOME/.config/scripts/theme-switch.sh" "$FULL_PATH"
+
+notify-send -t 2000 "  Wallpaper Updated" "Theme synced with matugen" -i "$FULL_PATH"

@@ -1,0 +1,103 @@
+{
+    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+    "logo": {
+        "source": "arch_small",
+        "padding": {
+            "top": 1,
+            "left": 2,
+            "right": 2
+        }
+    },
+    "display": {
+        "separator": "  "
+    },
+    "modules": [
+        "break",
+        {
+            "type": "os",
+            "key": "󰣇 os",
+            "keyColor": "green"
+        },
+        {
+            "type": "kernel",
+            "key": "󰘚 kr",
+            "keyColor": "green"
+        },
+        {
+            "type": "packages",
+            "key": "󰏖 pk",
+            "keyColor": "green"
+        },
+        {
+            "type": "shell",
+            "key": "󰆍 sh",
+            "keyColor": "green"
+        },
+        "break",
+        {
+            "type": "wm",
+            "key": "󰖲 wm",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "terminal",
+            "key": "󰗚 tm",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "terminalfont",
+            "key": "󰛖 ft",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "cursor",
+            "key": "󰇀 cu",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "icons",
+            "key": "󰀻 ic",
+            "keyColor": "cyan"
+        },
+        "break",
+        {
+            "type": "host",
+            "key": "󰌢 hw",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "cpu",
+            "key": "󰻠 cp",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "gpu",
+            "key": "󰻑 gp",
+            "format": "{2}",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "memory",
+            "key": "󰾆 mm",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "display",
+            "key": "󰍹 dp",
+            "keyColor": "yellow",
+            "compactType": "original-with-refresh-rate"
+        },
+        {
+            "type": "uptime",
+            "key": "󰅐 up",
+            "keyColor": "yellow"
+        },
+        "break",
+        {
+            "type": "colors",
+            "paddingLeft": 4,
+            "symbol": "circle"
+        },
+        "break"
+    ]
+}

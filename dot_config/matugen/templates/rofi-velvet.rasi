@@ -1,0 +1,104 @@
+/* matugen template: rofi/velvet.rasi */
+/* matugen: this file is generated on wallpaper change */
+
+* {
+    bg:      {{colors.background.dark.hex}};
+    bg-alt:  {{colors.surface_container_low.dark.hex}};
+    fg:      {{colors.on_background.dark.hex}};
+    accent:  {{colors.primary.dark.hex}};
+    accent2: {{colors.secondary.dark.hex}};
+    accent3: {{colors.tertiary.dark.hex}};
+    subtle:  {{colors.outline.dark.hex}};
+
+    background-color: transparent;
+    text-color:       @fg;
+    margin:           0;
+    padding:          0;
+    spacing:          0;
+}
+
+window {
+    width:            640px;
+    x-offset:         0;
+    y-offset:         -8%;
+
+    background-color: rgba({{colors.background.dark.red}}, {{colors.background.dark.green}}, {{colors.background.dark.blue}}, 0.92);
+    border:           2px 0 0 0;
+    border-color:     @accent;
+    border-radius:    20px;
+    cursor:           "default";
+}
+
+mainbox {
+    padding:  28px;
+    children: [ "inputbar", "listview" ];
+}
+
+inputbar {
+    margin:           0 0 20px 0;
+    padding:          10px 16px;
+    background-color: rgba(255,255,255,0.03);
+    border-radius:    12px;
+    children:         [ "prompt", "entry" ];
+}
+
+prompt {
+    padding:    0 12px 0 0;
+    text-color: @accent;
+    font:       "Inter Bold 12";
+}
+
+entry {
+    placeholder:       "Type to search…";
+    placeholder-color: @subtle;
+    cursor:            text;
+}
+
+listview {
+    lines:        8;
+    columns:      1;
+    fixed-height: true;
+    scrollbar:    false;
+    spacing:      4px;
+}
+
+element {
+    padding:       10px 14px;
+    border-radius: 10px;
+    cursor:        pointer;
+    spacing:       14px;
+}
+
+element normal.normal,
+element alternate.normal {
+    background-color: transparent;
+    text-color:       @fg;
+}
+
+element-icon {
+    size:   28px;
+    margin: 0px 10px 0px 0px;
+    background-color: transparent;
+}
+
+element-text {
+    vertical-align:   0.5;
+    background-color: transparent;
+    text-color:       inherit;
+    font:             "Inter Medium 12";
+}
+
+element selected {
+    background-color: rgba({{colors.primary.dark.red}}, {{colors.primary.dark.green}}, {{colors.primary.dark.blue}}, 0.12);
+    text-color:       @accent;
+}
+
+element normal active {
+    background-color: rgba({{colors.secondary.dark.red}}, {{colors.secondary.dark.green}}, {{colors.secondary.dark.blue}}, 0.08);
+    text-color:       @accent2;
+}
+
+element urgent {
+    background-color: rgba({{colors.tertiary.dark.red}}, {{colors.tertiary.dark.green}}, {{colors.tertiary.dark.blue}}, 0.10);
+    text-color:       @accent3;
+}

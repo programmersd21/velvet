@@ -1,0 +1,86 @@
+# matugen template: btop/velvet.theme
+# matugen: this file is generated on wallpaper change
+
+# Main background, empty for terminal default, any other field can be empty as well
+theme[main_bg]="{{colors.background.dark.hex}}"
+
+# Main text color
+theme[main_fg]="{{colors.on_background.dark.hex}}"
+
+# Title color for boxes
+theme[title]="{{colors.primary.dark.hex}}"
+
+# Highlight color for keyboard shortcuts
+theme[hi_fg]="{{colors.secondary.dark.hex}}"
+
+# Background color of selected item in lists
+theme[selected_bg]="{{colors.surface_container_high.dark.hex}}"
+
+# Foreground color of selected item in lists
+theme[selected_fg]="{{colors.primary.dark.hex}}"
+
+# Color of inactive/disabled text
+theme[inactive_fg]="{{colors.outline.dark.hex}}"
+
+# Color of logout / mbox buttons
+theme[proc_misc]="{{colors.tertiary.dark.hex}}"
+
+# Cpu box outline color
+theme[cpu_box]="{{colors.primary.dark.hex}}"
+
+# Memory/disks box outline color
+theme[mem_box]="{{colors.secondary.dark.hex}}"
+
+# Net box outline color
+theme[net_box]="{{colors.tertiary.dark.hex}}"
+
+# Processes box outline color
+theme[proc_box]="{{colors.primary.dark.hex}}"
+
+# Box divider line and small boxes line color
+theme[div_line]="{{colors.outline_variant.dark.hex}}"
+
+# Temperature graph colors
+theme[temp_start]="{{colors.primary.dark.hex}}"
+theme[temp_mid]="{{colors.secondary.dark.hex}}"
+theme[temp_end]="{{colors.error.dark.hex}}"
+
+# CPU graph colors
+theme[cpu_start]="{{colors.primary.dark.hex}}"
+theme[cpu_mid]="{{colors.secondary.dark.hex}}"
+theme[cpu_end]="{{colors.tertiary.dark.hex}}"
+
+# Mem graph colors
+theme[free_start]="{{colors.primary.dark.hex}}"
+theme[free_mid]="{{colors.secondary.dark.hex}}"
+theme[free_end]="{{colors.tertiary.dark.hex}}"
+
+# Cached graph colors
+theme[cached_start]="{{colors.secondary.dark.hex}}"
+theme[cached_mid]="{{colors.tertiary.dark.hex}}"
+theme[cached_end]="{{colors.primary.dark.hex}}"
+
+# Available graph colors
+theme[available_start]="{{colors.tertiary.dark.hex}}"
+theme[available_mid]="{{colors.primary.dark.hex}}"
+theme[available_end]="{{colors.secondary.dark.hex}}"
+
+# Used graph colors
+theme[used_start]="{{colors.primary.dark.hex}}"
+theme[used_mid]="{{colors.secondary.dark.hex}}"
+theme[used_end]="{{colors.tertiary.dark.hex}}"
+
+# Download graph colors
+theme[download_start]="{{colors.primary.dark.hex}}"
+theme[download_mid]="{{colors.secondary.dark.hex}}"
+theme[download_end]="{{colors.tertiary.dark.hex}}"
+
+# Upload graph colors
+theme[upload_start]="{{colors.secondary.dark.hex}}"
+theme[upload_mid]="{{colors.tertiary.dark.hex}}"
+theme[upload_end]="{{colors.primary.dark.hex}}"
+
+# Process graph colors
+theme[process_start]="{{colors.primary.dark.hex}}"
+theme[process_mid]="{{colors.secondary.dark.hex}}"
+theme[process_end]="{{colors.tertiary.dark.hex}}"

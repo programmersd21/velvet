@@ -1,0 +1,50 @@
+[config]
+theme = "dark"
+scheme = "tonal-spot"
+
+[config.wallpaper]
+set = true
+command = "awww"
+arguments = ["img", "--transition-type", "grow"]
+
+[templates.waybar]
+input_path = "~/.config/matugen/templates/waybar-style.css"
+output_path = "~/.config/waybar/colors.css"
+post_hook = "pkill -SIGUSR2 waybar 2>/dev/null || true"
+
+[templates.kitty]
+input_path = "~/.config/matugen/templates/kitty-velvet-theme.conf"
+output_path = "~/.config/kitty/velvet-theme.conf"
+
+[templates.rofi]
+input_path = "~/.config/matugen/templates/rofi-velvet.rasi"
+output_path = "~/.config/rofi/velvet.rasi"
+
+[templates.hypr]
+input_path = "~/.config/matugen/templates/hypr-colors.conf"
+output_path = "~/.config/hypr/colors.conf"
+post_hook = "hyprctl reload 2>/dev/null || true"
+
+[templates.swaync]
+input_path = "~/.config/matugen/templates/swaync-style.css"
+output_path = "~/.config/swaync/style.css"
+post_hook = "swaync-client -rs 2>/dev/null || true"
+
+[templates.cava]
+input_path = "~/.config/matugen/templates/matugen-cava"
+output_path = "~/.config/cava/config"
+post_hook = "pkill -USR1 cava 2>/dev/null || true"
+
+[templates.btop]
+input_path = "~/.config/matugen/templates/btop-theme"
+output_path = "~/.config/btop/themes/velvet.theme"
+
+[templates.starship]
+input_path = "~/.config/matugen/templates/starship.toml"
+output_path = "~/.config/starship/starship.toml"
+
+[templates.fastfetch]
+input_path = "~/.config/matugen/templates/fastfetch-config.jsonc"
+output_path = "~/.config/fastfetch/config.jsonc"
+
+

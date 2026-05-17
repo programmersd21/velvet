@@ -1,0 +1,100 @@
+/*
+ * velvet noir · rofi theme
+ */
+
+* {
+    bg:          #0d0d0fEE;
+    bg-alt:      #1c1c21;
+    fg:          #e8e6f0;
+    accent:      #b48eff;
+    accent2:     #7dd3c8;
+    subtle:      #6b6b7a;
+
+    background-color:   transparent;
+    text-color:         @fg;
+    margin:             0;
+    padding:            0;
+    spacing:            0;
+}
+
+window {
+    width:              640px;
+    x-offset:           0;
+    y-offset:           -8%;
+
+    background-color:   @bg;
+    border:             2px 0 0 0;
+    border-color:       @accent;
+    border-radius:      20px;
+    cursor:             "default";
+}
+
+mainbox {
+    padding:            28px;
+    children:           [ "inputbar", "listview" ];
+}
+
+inputbar {
+    margin:             0 0 20px 0;
+    padding:            10px 16px;
+    background-color:   rgba(255,255,255,0.03);
+    border-radius:      12px;
+    children:           [ "prompt", "entry" ];
+}
+
+prompt {
+    padding:            0 12px 0 0;
+    text-color:         @accent;
+    font:               "Inter Bold 12";
+}
+
+entry {
+    placeholder:        "Type to search…";
+    placeholder-color:  @subtle;
+    cursor:             text;
+}
+
+listview {
+    lines:              8;
+    columns:            1;
+    fixed-height:       true;
+    scrollbar:          false;
+    spacing:            4px;
+}
+
+element {
+    padding:            10px 14px;
+    border-radius:      10px;
+    cursor:             pointer;
+    spacing:            14px;
+}
+
+element normal.normal {
+    background-color:   transparent;
+}
+
+element alternate.normal {
+    background-color:   transparent;
+}
+
+element selected.normal {
+    background-color:   rgba(180, 142, 255, 0.12);
+    text-color:         @accent;
+}
+
+element normal.active {
+    background-color:   rgba(125, 211, 200, 0.08);
+    text-color:         @accent2;
+}
+
+element-icon {
+    size:               28px;
+    cursor:             inherit;
+}
+
+element-text {
+    cursor:             inherit;
+    vertical-align:     0.5;
+    horizontal-align:   0.0;
+    font:               "Inter Medium 12";
+}

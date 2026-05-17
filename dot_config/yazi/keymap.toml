@@ -1,0 +1,15 @@
+# chezmoi source: dot_config/yazi/keymap.toml
+# chezmoi destination: ~/.config/yazi/keymap.toml
+
+# // Ricer's Log
+# // 1. Custom Productivity: Vi-style navigation and custom copy bindings.
+
+[[manager.prepend_keymap]]
+on   = "y"
+run  = 'shell --block "yazi-copy-path"'
+desc = "Copy path to clipboard"
+
+[[manager.prepend_keymap]]
+on   = "z"
+run  = "hidden toggle"
+desc = "Toggle hidden"

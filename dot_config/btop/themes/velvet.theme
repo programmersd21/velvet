@@ -1,0 +1,56 @@
+# chezmoi source: dot_config/btop/themes/velvet.theme
+# chezmoi destination: ~/.config/btop/themes/velvet.theme
+#
+# Ricer's Log:
+# 1) All btop colors map directly to Velvet Noir so the monitor feels "native".
+# 2) Graphs cascade accent -> accent2 -> accent3 to encode meaning without rainbow noise.
+# 3) Warnings are rose/red, success is green, highlights are violet: semantic and consistent.
+
+# NOTE:
+# btop theme format is key=value with 0-255 terminal colors OR hex-like; modern btop accepts #RRGGBB.
+
+theme[main_bg] = "#0d0d0f"
+theme[main_fg] = "#e8e6f0"
+theme[title] = "#b48eff"
+theme[hi_fg] = "#ffffff"
+theme[selected_bg] = "#1c1c21"
+theme[selected_fg] = "#b48eff"
+theme[inactive_fg] = "#6b6b7a"
+
+theme[proc_misc] = "#6b6b7a"
+theme[proc_sorting] = "#7dd3c8"
+theme[proc_box] = "#3a3a45"
+theme[proc_fg] = "#e8e6f0"
+theme[proc_bg] = "#0d0d0f"
+
+theme[cpu_box] = "#3a3a45"
+theme[mem_box] = "#3a3a45"
+theme[net_box] = "#3a3a45"
+
+theme[div_line] = "#3a3a45"
+
+theme[temp_start] = "#7dd3c8"
+theme[temp_mid] = "#f5c97a"
+theme[temp_end] = "#f28b7d"
+
+theme[cpu_start] = "#b48eff"
+theme[cpu_mid] = "#7dd3c8"
+theme[cpu_end] = "#f0a5c0"
+
+theme[mem_start] = "#7dd3c8"
+theme[mem_mid] = "#b48eff"
+theme[mem_end] = "#f0a5c0"
+
+theme[download_start] = "#7dd3c8"
+theme[download_mid] = "#b48eff"
+theme[download_end] = "#f0a5c0"
+
+theme[upload_start] = "#b48eff"
+theme[upload_mid] = "#7dd3c8"
+theme[upload_end] = "#f0a5c0"
+
+theme[ok] = "#8ecfb0"
+theme[good] = "#8ecfb0"
+theme[warn] = "#f5c97a"
+theme[bad] = "#f28b7d"
+theme[crit] = "#f28b7d"

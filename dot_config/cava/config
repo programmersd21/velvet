@@ -1,0 +1,28 @@
+# ┌──────────────────────────────────────────────────────────────────────────────┐
+# │  velvet noir · cava                                                         │
+# └──────────────────────────────────────────────────────────────────────────────┘
+
+[general]
+framerate = 75
+bars = 0
+bar_width = 4
+bar_spacing = 2
+
+[input]
+method = pulse
+
+[output]
+method = ncurses
+channels = stereo
+
+[color]
+gradient = 1
+gradient_count = 4
+gradient_color_1 = '#b48eff'
+gradient_color_2 = '#7dd3c8'
+gradient_color_3 = '#f0a5c0'
+gradient_color_4 = '#f5c97a'
+
+[smoothing]
+monstercat = 1
+noise_reduction = 77

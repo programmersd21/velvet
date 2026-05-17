@@ -1,0 +1,174 @@
+# ==============================================================================
+# 🎗️ GOD-TIER .BASHRC CONFIGURATION (Hyprland & Chezmoi Optimized)
+# ==============================================================================
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# ------------------------------------------------------------------------------
+# 1. ENVIRONMENT VARIABLES & PATHS
+# ------------------------------------------------------------------------------
+export EDITOR="nvim"
+export VISUAL="nvim"
+export BROWSER="google-chrome-stable" # Change to firefox/brave if preferred
+export TERMINAL="kitty"       # Or kitty, alacritty, etc.
+
+# Enable colored output for older coreutils
+export CLICOLOR=1
+export LS_COLORS=$(dircolors -b)
+
+# Ensure local binaries are prioritized
+export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+
+# ------------------------------------------------------------------------------
+# 2. SHELL OPTIONS & ADVANCED HISTORY ENGINE
+# ------------------------------------------------------------------------------
+# Control behavior of command history
+export HISTSIZE=50000
+export HISTFILESIZE=100000
+export HISTCONTROL="ignoreboth:erasedups" # Ignore spaces, duplicates, and deduplicate
+export HISTIGNORE="ls:cd:exit:clear:pwd:h:czs"
+
+shopt -s histappend                      # Append to history file instead of overwriting
+shopt -s autocd                          # Typing a directory name enters it directly
+shopt -s cdspell                         # Autocorrect minor typos in directory names
+shopt -s checkwinsize                    # Update window size configurations after every command
+
+# Sync history across multiple active terminal instances instantly
+PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+
+# ------------------------------------------------------------------------------
+# 3. MODERN CLI REPLACEMENTS (Eza, Bat, Zoxide)
+# ------------------------------------------------------------------------------
+# Enhanced Directory Listings via 'eza' (with fallback to native ls)
+if command -v eza &> /dev/null; then
+    alias ls="eza --icons=always --group-directories-first --color=always"
+    alias ll="eza -lah --icons=always --group-directories-first --git"
+    alias lt="eza --tree --level=2 --icons=always"
+else
+    alias ls="ls --color=auto --group-directories-first"
+    alias ll="ls -lah --group-directories-first"
+fi
+
+# Better File Viewing via 'bat'
+if command -v bat &> /dev/null; then
+    alias cat="bat --style=plain --paging=never"
+    alias preview="bat --style=numbers"
+fi
+
+# Smarter Directory Navigation via 'zoxide'
+if command -v zoxide &> /dev/null; then
+    eval "$(zoxide init bash)"
+    alias cd="z"
+fi
+
+# Fast Line-Aware Diffs
+if command -v delta &> /dev/null; then
+    alias diff="delta"
+fi
+
+# ------------------------------------------------------------------------------
+# 4. HYPRLAND & WAYLAND POWER UTILITIES
+# ------------------------------------------------------------------------------
+alias hr="hyprctl reload"
+alias hl="hyprctl clients"
+alias hmon="hyprctl monitors"
+alias hbinds="hyprctl binds"
+alias hwin="hyprctl activewindow"
+
+# Fix and stream runtime error output instantly
+alias hlog="tail -f ~/.local/share/hyprland/$(ls -t ~/.local/share/hyprland/ | head -n1)/hyprland.log"
+
+# Quickly validate configuration syntax before reloading to prevent panic flags
+alias hcheck="hyprctl configcheck"
+
+# ------------------------------------------------------------------------------
+# 5. SAFEKEEPING CHEZMOI ALIASES
+# ------------------------------------------------------------------------------
+alias cz="chezmoi"
+alias czs="chezmoi status"
+alias czd="chezmoi diff -x scripts"   # Safely checks what changed without firing lifecycle hooks
+alias cza="chezmoi apply -x scripts"  # Deploys tracking changes with your custom rule protections
+alias cze="chezmoi edit"
+alias czcd="cd \$(chezmoi source-path)"
+
+# ------------------------------------------------------------------------------
+# 6. SYSTEM MAINTENANCE, GIT, & QUALITY OF LIFE
+# ------------------------------------------------------------------------------
+# Fast Navigation Shortcuts
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+
+# Safety nets
+alias rm="rm -I --preserve-root"
+alias cp="cp -iv"
+alias mv="mv -iv"
+
+# Arch Linux / Pacman workflow
+alias update="sudo pacman -Syu"
+alias paru-clean="paru -Sc --noconfirm"
+
+# Clear shell
+alias cls="clear"
+
+# Quick Git commands
+alias gs="git status"
+alias gd="git diff"
+alias ga="git add"
+alias gc="git commit -m"
+alias gp="git push"
+alias gl="git log --oneline --graph --decorate"
+
+# Python/Dev shortcut
+alias py="python3"
+alias venv="python3 -m venv .venv && source .venv/bin/activate"
+
+# ------------------------------------------------------------------------------
+# 7. INTERACTIVE AUTOMATIONS & HELPER FUNCTIONS
+# ------------------------------------------------------------------------------
+# Make a directory and jump into it instantly
+mkcd() {
+    mkdir -p "$1" && cd "$1"
+}
+
+# Smart Extraction function for all common archival types
+extract() {
+    if [ -f "$1" ]; then
+        case "$1" in
+            *.tar.bz2)   tar xjf "$1"     ;;
+            *.tar.gz)    tar xzf "$1"     ;;
+            *.bz2)       bunzip2 "$1"     ;;
+            *.rar)       unrar x "$1"     ;;
+            *.gz)        gunzip "$1"      ;;
+            *.tar)       tar xf "$1"      ;;
+            *.tbz2)      tar xjf "$1"     ;;
+            *.tgz)       tar xzf "$1"     ;;
+            *.zip)       unzip "$1"       ;;
+            *.Z)         uncompress "$1"  ;;
+            *.7z)        7z x "$1"        ;;
+            *)           echo "'$1' cannot be extracted via extract()" ;;
+        esac
+    else
+        echo "'$1' is not a valid archive file"
+    fi
+}
+
+# ------------------------------------------------------------------------------
+# 8. FETCH ENGINE (Fastfetch Execution)
+# ------------------------------------------------------------------------------
+# Fires fastfetch on terminal login, cleanly clearing spacing
+if command -v fastfetch &> /dev/null; then
+    echo ""
+    fastfetch
+    echo ""
+fi
+
+
+# ------------------------------------------------------------------------------
+# 9. STARSHIP PROMPT ENGINE
+# ------------------------------------------------------------------------------
+if command -v starship &> /dev/null; then
+    eval "$(starship init bash)"
+fi
+

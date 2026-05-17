@@ -1,0 +1,19 @@
+# chezmoi source: dot_config/yazi/yazi.toml
+# chezmoi destination: ~/.config/yazi/yazi.toml
+
+# // Ricer's Log
+# // 1. Workflow: Vi-style keybindings for speed and consistency with terminal habits.
+# // 2. UX: Previews for images/PDFs enabled for efficient file browsing.
+
+[opener]
+edit = [
+    { run = 'kitty -e nvim "$@"', desc = "Edit", block = true, for = "unix" },
+]
+open = [
+    { run = 'xdg-open "$@"', desc = "Open", for = "linux" },
+]
+
+[manager]
+show_hidden = false
+sort_by = "mtime"
+sort_dir_first = true

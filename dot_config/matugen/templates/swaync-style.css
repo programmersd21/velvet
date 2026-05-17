@@ -1,0 +1,19 @@
+/* matugen template: swaync/style.css */
+/* matugen: this file is generated on wallpaper change */
+
+:root {
+  --base: {{colors.background.dark.hex}};
+  --surface: {{colors.surface_container_low.dark.hex}};
+  --overlay: {{colors.surface_container.dark.hex}};
+  --muted: {{colors.outline_variant.dark.hex}};
+  --subtle: {{colors.outline.dark.hex}};
+  --text: {{colors.on_background.dark.hex}};
+  --accent: {{colors.primary.dark.hex}};
+  --accent2: {{colors.secondary.dark.hex}};
+  --accent3: {{colors.tertiary.dark.hex}};
+  --red: {{colors.error.dark.hex}};
+  --green: {{colors.primary_container.dark.hex}};
+  --yellow: {{colors.tertiary_container.dark.hex}};
+}
+
+@import url("velvet-static.css");

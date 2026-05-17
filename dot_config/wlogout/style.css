@@ -1,0 +1,113 @@
+/* ┌──────────────────────────────────────────────────────────────────────────────┐
+   │  velvet noir · wlogout/style.css                                           │
+   └──────────────────────────────────────────────────────────────────────────────┘ */
+
+@define-color base    #0d0d0f;
+@define-color surface #131316;
+@define-color overlay #1c1c21;
+@define-color muted   #3a3a45;
+@define-color text    #e8e6f0;
+@define-color accent  #b48eff;
+@define-color accent2 #7dd3c8;
+@define-color red     #f28b7d;
+@define-color green   #8ecfb0;
+@define-color yellow  #f5c97a;
+
+* {
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-size: 14px;
+    color: @text;
+}
+
+window {
+    background: rgba(13, 13, 15, 0.65);
+}
+
+button {
+    min-width:  140px;
+    min-height: 140px;
+    margin: 14px;
+    border-radius: 20px;
+    background: rgba(28, 28, 33, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    background-repeat: no-repeat;
+    background-position: center 30%;
+    background-size: 48px;
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(180, 142, 255, 0.15);
+}
+
+button:hover {
+    border-color: rgba(180, 142, 255, 0.20);
+    box-shadow: 0 0 32px rgba(180, 142, 255, 0.12);
+    background-color: rgba(28, 28, 33, 0.90);
+}
+
+/* ── Action-specific icon images ─────────────────────────────────────────── */
+
+button#lock {
+    background-image: url("icons/lock.png");
+}
+
+button#hibernate {
+    background-image: url("icons/hibernate.png");
+}
+
+button#sleep {
+    background-image: url("icons/sleep.png");
+}
+
+button#logout {
+    background-image: url("icons/logout.png");
+}
+
+button#restart {
+    background-image: url("icons/restart.png");
+}
+
+button#power {
+    background-image: url("icons/power.png");
+}
+
+/* ── Action-specific hover tints ─────────────────────────────────────────── */
+
+button#power:hover {
+    box-shadow: 0 0 32px rgba(242, 139, 125, 0.18);
+    border-color: rgba(242, 139, 125, 0.30);
+    background-image: url("icons/power-hover.png");
+}
+
+button#restart:hover {
+    box-shadow: 0 0 32px rgba(125, 211, 200, 0.16);
+    border-color: rgba(125, 211, 200, 0.25);
+    background-image: url("icons/restart-hover.png");
+}
+
+button#sleep:hover,
+button#hibernate:hover {
+    box-shadow: 0 0 32px rgba(245, 201, 122, 0.14);
+    border-color: rgba(245, 201, 122, 0.22);
+}
+
+button#sleep:hover {
+    background-image: url("icons/sleep-hover.png");
+}
+
+button#hibernate:hover {
+    background-image: url("icons/hibernate-hover.png");
+}
+
+button#lock:hover {
+    box-shadow: 0 0 32px rgba(180, 142, 255, 0.16);
+    border-color: rgba(180, 142, 255, 0.25);
+    background-image: url("icons/lock-hover.png");
+}
+
+button#logout:hover {
+    box-shadow: 0 0 32px rgba(142, 207, 176, 0.14);
+    border-color: rgba(142, 207, 176, 0.22);
+    background-image: url("icons/logout-hover.png");
+}

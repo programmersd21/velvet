@@ -1,0 +1,14 @@
+# chezmoi source: dot_config/nwg-look/config
+# chezmoi destination: ~/.config/nwg-look/config
+
+# // Ricer's Log
+# // 1. Central Configuration: Using nwg-look for simplified management of GTK settings.
+
+{
+  "gtk-theme": "adw-gtk3-dark",
+  "icon-theme": "Papirus-Dark",
+  "cursor-theme": "Bibata-Modern-Classic",
+  "cursor-size": 24,
+  "font-name": "Inter 11",
+  "color-scheme": "prefer-dark"
+}

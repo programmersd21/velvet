@@ -1,0 +1,20 @@
+/* ┌──────────────────────────────────────────────────────────────────────────────┐
+# │  velvet noir · swaync style.css                                             │
+# └──────────────────────────────────────────────────────────────────────────────┘ */
+
+:root {
+  --base: #0d0d0f;
+  --surface: #131316;
+  --overlay: #1c1c21;
+  --muted: #3a3a45;
+  --subtle: #6b6b7a;
+  --text: #e8e6f0;
+  --accent: #b48eff;
+  --accent2: #7dd3c8;
+  --accent3: #f0a5c0;
+  --red: #f28b7d;
+  --green: #8ecfb0;
+  --yellow: #f5c97a;
+}
+
+@import url("velvet-static.css");

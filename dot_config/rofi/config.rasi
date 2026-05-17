@@ -1,0 +1,16 @@
+/*
+ * velvet noir · rofi config
+ */
+
+configuration {
+    modi:                       "drun,run,filebrowser";
+    show-icons:                 true;
+    icon-theme:                 "Papirus-Dark";
+    display-drun:               "APPS";
+    display-run:                "RUN";
+    display-filebrowser:        "FILES";
+    drun-display-format:        "{name}";
+    font:                       "Inter Medium 12";
+}
+
+@theme "velvet"

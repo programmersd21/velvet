@@ -1,0 +1,18 @@
+# chezmoi source: dot_config/yazi/theme.toml
+# chezmoi destination: ~/.config/yazi/theme.toml
+
+# // Ricer's Log
+# // 1. Velvet Mapping: Full color mapping for Yazi to ensure visual parity with the rest of the ecosystem.
+
+[manager]
+border_style = { fg = "#3a3a45" }
+preview_hovered = { fg = "#e8e6f0" }
+
+[status]
+primary = { fg = "#0d0d0f", bg = "#b48eff" }
+secondary = { fg = "#e8e6f0", bg = "#3a3a45" }
+
+[filetype]
+image = { fg = "#7dd3c8" }
+video = { fg = "#7dd3c8" }
+pdf = { fg = "#f28b7d" }
