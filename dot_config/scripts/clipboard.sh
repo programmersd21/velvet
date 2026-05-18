@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # velvet noir · clipboard manager
 
+export YDOTOOL_SOCKET="$HOME/.ydotool_socket"
+
 tmp_dir="/tmp/cliphist"
 mkdir -p "$tmp_dir"
 
@@ -34,6 +36,7 @@ get_list() {
 
 # 1. capture selection
 # note: -dmenu requires tab-separated fields for icon support
+PREV_WIN=$(hyprctl activewindow -j | jq -r '.address')
 selection=$(get_list | rofi -dmenu -i -p "CLIP" -show-icons -theme ~/.config/rofi/velvet.rasi)
 
 # 2. exit if nothing selected
@@ -47,12 +50,21 @@ if [[ "$selection" == *"Clear All"* ]]; then
 fi
 
 # 4. decode and copy
-# extract the id (first field)
-id=$(echo "$selection" | cut -f1)
-cliphist decode <<< "$id" | wl-copy
+echo "$selection" | cliphist decode | wl-copy
 
-# 5. wait to ensure clipboard is ready
-sleep 0.2
+# 5. restore focus and wait until compositor confirms it before pasting
+if [[ -n "$PREV_WIN" ]]; then
+    hyprctl dispatch focuswindow "address:0x${PREV_WIN#0x}"
+    for i in {1..20}; do
+        current=$(hyprctl activewindow -j | jq -r '.address')
+        [[ "${current#0x}" == "${PREV_WIN#0x}" ]] && break
+        sleep 0.05
+    done
+fi
 
 # 6. paste
-wtype -M ctrl -k v -m ctrl
+ydotool key 29:1 47:1 47:0 29:0
+
+# 7. re-lock focus back on original window so next trigger captures correctly
+sleep 0.05
+[[ -n "$PREV_WIN" ]] && hyprctl dispatch focuswindow "address:0x${PREV_WIN#0x}"

@@ -121,7 +121,7 @@ PACMAN_PKGS=(
     slurp
     cliphist
     wl-clipboard
-    wtype
+    ydotool
     networkmanager
 )
 
@@ -363,6 +363,63 @@ bootstrap_colors() {
     ok "color scheme generated — waybar, rofi, kitty, etc. are ready"
 }
 
+# ── ydotool ──────────────────────────────────────────────────────────────────
+setup_ydotool() {
+    log "configuring ydotool..."
+
+    # add user to input group
+    if id -nG "$USER" | grep -qw input; then
+        ok "user already in input group"
+    else
+        sudo usermod -aG input "$USER"
+        ok "added $USER to input group"
+    fi
+
+    # ensure uinput loads on boot
+    echo "uinput" | sudo tee /etc/modules-load.d/uinput.conf >/dev/null
+
+    # load uinput immediately (no reboot needed for this session)
+    sudo modprobe uinput 2>/dev/null || true
+
+    # reload udev rules
+    sudo udevadm control --reload-rules >/dev/null 2>&1 || true
+    sudo udevadm trigger >/dev/null 2>&1 || true
+
+    # fix socket path — Arch's packaged unit uses /run/user/$UID/.ydotool_socket
+    # which breaks on Hyprland; override to use $HOME/.ydotool_socket instead
+    local override_dir="$HOME/.config/systemd/user/ydotool.service.d"
+    local override_file="$override_dir/override.conf"
+    mkdir -p "$override_dir"
+    cat > "$override_file" <<'EOF'
+[Service]
+ExecStart=
+ExecStart=/usr/bin/ydotoold --socket-path=%h/.ydotool_socket
+Environment=YDOTOOL_SOCKET=%h/.ydotool_socket
+EOF
+    ok "wrote ydotool socket override"
+
+    # reload systemd and start service with the fixed unit
+    systemctl --user daemon-reload
+
+    if systemctl --user list-unit-files | grep -q "^ydotool.service"; then
+        systemctl --user stop ydotool.service >/dev/null 2>&1 || true
+        systemctl --user reset-failed ydotool.service >/dev/null 2>&1 || true
+        rm -f /run/user/"${UID}"/.ydotool_socket "$HOME"/.ydotool_socket
+        systemctl --user enable --now ydotool.service >/dev/null 2>&1 || true
+        ok "enabled ydotool.service"
+    else
+        warn "ydotool.service not found — skipping"
+    fi
+
+    # verify daemon
+    sleep 0.5
+    if pgrep -x ydotoold >/dev/null; then
+        ok "ydotoold running"
+    else
+        warn "ydotoold not running yet — a reboot may be required"
+    fi
+}
+
 # ── post-install ─────────────────────────────────────────────────────────────
 post_install() {
     log "running post-install setup..."
@@ -396,6 +453,7 @@ finish() {
     echo -e "  ${D}next steps:${R}"
     echo -e "    1. log out and select ${B}hyprland${R} from your display manager"
     echo -e "    2. press ${B}super+w${R} to pick a wallpaper and sync colors"
+    echo -e "    3. reboot once for ${B}ydotool${R} permissions"
     echo ""
     echo -e "  ${D}useful commands:${R}"
     echo -e "    ${D}hyprctl reload${R}          reload compositor"
@@ -422,6 +480,8 @@ main() {
 
     echo ""
     install_packages
+    echo ""
+    setup_ydotool
     echo ""
     setup_directories
     echo ""
