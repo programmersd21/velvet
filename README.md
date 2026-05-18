@@ -28,7 +28,7 @@ managed with chezmoi so the same dotfiles work across machines.
 
 **compositor** — hyprland with dwindle tiling. 4px inner gaps, 8px outer gaps, 14px rounded corners, 3px gradient borders that loop slowly. 4-pass blur with low noise. custom bezier curves for every animation type. v0.51.0 gesture syntax for 3-finger workspace swiping.
 
-**bar** — waybar at 38px. three floating pill islands with solid, opaque matugen-palette backgrounds. debossed text with embossed shadows for depth. icon-only workspaces (terminal, browser, chat, code, music). 24h clock in the center. icon-only network and bluetooth with details in tooltips. subtle lift animation on hover.
+**bar** — waybar at 44px. three floating pill islands with solid, opaque matugen-palette backgrounds. debossed text with embossed shadows for depth. icon-only workspaces (terminal, browser, chat, code, music). 12h clock in the center. network and bluetooth with text and details in tooltips. subtle lift animation on hover.
 
 <p align="center">
   <img src="screenshots/waybar.png" width="100%">
@@ -38,7 +38,7 @@ managed with chezmoi so the same dotfiles work across machines.
 
 **terminal** — kitty at 85% opacity with compositor blur (64). beam cursor with trail. jetbrainsmono nerd font at 12pt with 125% line height. 12px vertical / 16px horizontal padding. separator-style tab bar.
 
-**prompt** — starship with a clean two-line layout. directory and git info on line one, `❯` on line two. no powerline arrows, no background segments. just colored text with nerd font icons.
+**prompt** — starship with a Tokyo Night styled dynamic block prompt. uses powerline arrows ( / ) and solid matugen-palette background segments. features a cat icon (󰄛) as the prompt character, with directory, git info, and language versions beautifully separated.
 
 <p align="center">
   <img src="screenshots/fastfetch.png" width="80%">
@@ -53,6 +53,12 @@ managed with chezmoi so the same dotfiles work across machines.
 </p>
 
 **notifications** — swaync with a glass control center. buttons grid, mpris widget, do not disturb toggle, and scrollable notification list.
+
+<p align="center">
+  <img src="screenshots/swaync.png" width="80%">
+  <br>
+  <sub>swaync glass control center</sub>
+</p>
 
 **visualizer** — cava with a 4-color gradient across the palette (violet → teal → rose → gold). monstercat smoothing at 75fps.
 

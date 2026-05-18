@@ -57,7 +57,8 @@ entry {
 listview {
     lines:        8;
     columns:      1;
-    fixed-height: true;
+    fixed-height: false;
+    dynamic:      true;
     scrollbar:    false;
     spacing:      4px;
 }
