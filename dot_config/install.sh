@@ -106,6 +106,9 @@ PACMAN_PKGS=(
     ttf-jetbrains-mono-nerd
     inter-font
 
+    # emoji menu
+    rofimoji
+
     # icons
     papirus-icon-theme
 

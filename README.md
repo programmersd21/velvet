@@ -60,6 +60,7 @@ $mod = SUPER
 bind = $mod, RETURN, exec, kitty
 bind = $mod, SPACE,  exec, rofi -show drun
 bind = $mod, W,      exec, wallpaper-picker
+bind = $mod, W,      exec, emoji.sh
 bind = $mod, C,      exec, clipboard-manager
 bind = $mod, Q,      killactive
 bind = $mod, E,      exec, kitty -e yazi

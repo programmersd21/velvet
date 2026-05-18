@@ -18,7 +18,7 @@ get_list() {
             
             # generate thumbnail if it doesn't exist
             if [[ ! -f "$icon_path" ]]; then
-                cliphist decode <<< "$id" > /tmp/raw_img_clip.png 2>/dev/null
+                echo -n "$id" | cliphist decode > /tmp/raw_img_clip.png 2>/dev/null
                 # use imagemagick to create a square thumbnail
                 convert /tmp/raw_img_clip.png -gravity center -extent 1:1 -resize 128x128 "$icon_path" 2>/dev/null
                 rm /tmp/raw_img_clip.png
