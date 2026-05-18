@@ -116,6 +116,8 @@ PACMAN_PKGS=(
     imagemagick
     grim
     slurp
+    cliphist
+    wl-clipboard
 )
 
 # aur
