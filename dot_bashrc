@@ -12,6 +12,8 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 export BROWSER="google-chrome-stable" # Change to firefox/brave if preferred
 export TERMINAL="kitty"       # Or kitty, alacritty, etc.
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
 
 # Enable colored output for older coreutils
 export CLICOLOR=1

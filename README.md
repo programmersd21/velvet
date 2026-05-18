@@ -1,8 +1,8 @@
 # velvet noir
 ### a glass-forward, dynamically themed hyprland experience.
 
-![hero](/screenshots/main.png)
-*main workspace: blurred terminal, floating bar, and dynamic colors.*
+![demo](/screenshots/demo.gif)
+*velvet noir in action: dynamic themes, glassmorphism, and smooth animations.*
 
 [about](#about) • [gallery](#gallery) • [features](#features) • [install](#install)
 
@@ -40,10 +40,10 @@ velvet noir is a minimalist, dark-glass rice built for speed and aesthetics. it 
 | ![](/screenshots/wallpaper_menu.png) | ![](/screenshots/wlogout.png) |
 | *visual theme switcher* | *glass session control* |
 
-| lock screen | |
+| lock screen | main workspace |
 | :---: | :---: |
-| ![](/screenshots/hyprlock.png) | |
-| *animated blurred locker* | |
+| ![](/screenshots/hyprlock.png) | ![](/screenshots/main.png) |
+| *animated blurred locker* | *static main workspace* |
 
 ---
 
