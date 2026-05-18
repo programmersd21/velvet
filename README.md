@@ -60,10 +60,9 @@ $mod = SUPER
 bind = $mod, RETURN, exec, kitty
 bind = $mod, SPACE,  exec, rofi -show drun
 bind = $mod, W,      exec, wallpaper-picker
+bind = $mod, C,      exec, clipboard-manager
 bind = $mod, Q,      killactive
-bind = $mod, E,      exec, yazi
-bind = $mod, D,      exec, discord
-bind = $mod, C,      exec, clipboard menu
+bind = $mod, E,      exec, kitty -e yazi
 ```
 
 ---

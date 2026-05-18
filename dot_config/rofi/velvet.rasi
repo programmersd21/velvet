@@ -29,9 +29,25 @@ window {
     cursor:             "default";
 }
 
+
+message {
+    margin:             0 0 16px 0;
+    padding:            8px;
+    background-color:   rgba(255,255,255,0.03);
+    border-radius:      8px;
+    text-color:         @accent;
+}
+
+textbox {
+    text-color:         @accent;
+    vertical-align:     0.5;
+    horizontal-align:   0.0;
+    font:               "Inter Bold 11";
+}
+
 mainbox {
     padding:            28px;
-    children:           [ "inputbar", "listview" ];
+    children:           [ "inputbar", "message", "listview" ];
 }
 
 inputbar {

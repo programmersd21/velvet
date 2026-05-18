@@ -96,7 +96,7 @@ PACMAN_PKGS=(
     wireplumber
 
     # network & bluetooth
-    network-manager-applet
+    networkmanager
     blueman
 
     # auth
@@ -118,6 +118,8 @@ PACMAN_PKGS=(
     slurp
     cliphist
     wl-clipboard
+    wtype
+    networkmanager
 )
 
 # aur
@@ -376,6 +378,8 @@ post_install() {
     # ensure all scripts are executable
     chmod +x ~/.config/rofi/wallpaper-picker 2>/dev/null || true
     chmod +x ~/.config/scripts/theme-switch.sh 2>/dev/null || true
+    chmod +x ~/.config/scripts/clipboard.sh 2>/dev/null || true
+    chmod +x ~/.config/scripts/mpris.sh 2>/dev/null || true
 
     ok "post-install done"
 }

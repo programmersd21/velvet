@@ -14,7 +14,7 @@
 
     "modules-left": [
         "hyprland/workspaces",
-        "mpris"
+        "custom/mpris"
     ],
     "modules-center": [
         "clock"
@@ -38,17 +38,15 @@
         }
     },
 
-    "mpris": {
-        "format": "{player_icon}  {title} - {artist}",
-        "format-paused": "󰏤  {title} - {artist}",
-        "player-icons": {
-            "default": "󰎆",
-            "spotify": "󰓇",
-            "firefox": "󰈹",
-            "chromium": "󰊯",
-            "mpv": "󰐹"
-        },
+    "custom/mpris": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "$HOME/.config/scripts/mpris.sh",
+        "interval": 2,
         "max-length": 35,
+        "on-click": "playerctl play-pause",
+        "on-scroll-up": "playerctl next",
+        "on-scroll-down": "playerctl previous",
         "tooltip": true
     },
 
@@ -76,7 +74,7 @@
         "format-ethernet": "󰈀  Wired",
         "format-disconnected": "󰖪  Offline",
         "tooltip-format": "{ipaddr}",
-        "on-click": "alacritty -e nmtui"
+        "on-click": "~/.config/scripts/nmtui-wrapper.sh"
     },
 
     "bluetooth": {
