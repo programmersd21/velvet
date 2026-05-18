@@ -131,90 +131,72 @@
 /* ── widget: mpris player ───────────────────────────────────────────────────── */
 .widget-mpris {
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
   padding: 12px;
-  margin: 8px 4px 16px 4px;
+  margin: 4px;
 }
 
 .widget-mpris-player {
   background: transparent;
-  padding: 0;
-  margin: 0;
 }
 
 .widget-mpris-album-art {
-  border-radius: 12px;
-  margin-right: 14px;
+  border-radius: 8px;
+  margin-right: 12px;
+  min-width: 50px;
+  min-height: 50px;
 }
 
 .widget-mpris-title {
   font-family: "Inter Bold";
-  font-size: 1.05rem;
-  letter-spacing: -0.2px;
+  font-size: 0.95rem;
 }
 
 .widget-mpris-subtitle {
   color: @text-subtle;
-  font-size: 0.85rem;
-  margin-top: 2px;
-}
-
-.widget-mpris-player > box > box > button {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 50%;
-  padding: 8px;
-  margin: 0px 4px;
-  min-width: 24px;
-  min-height: 24px;
-  font-size: 1rem;
-}
-
-.widget-mpris-player > box > box > button:hover {
-  background: @accent-dim;
-  border-color: alpha(@accent, 0.3);
-  color: @accent;
+  font-size: 0.8rem;
 }
 
 /* ── notifications container ────────────────────────────────────────────────── */
 .control-center .notification-row {
-  margin: 6px 4px;
+  margin: 8px 0;
+  padding: 0;
+  min-height: 70px;
 }
 
 .control-center .notification-row .notification-background {
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 16px;
-  padding: 10px;
-}
-
-.control-center .notification-row .notification-background:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: @border-glass;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 12px;
 }
 
 .control-center .notification-row .notification-background .notification {
-  padding: 4px;
-}
-
-.control-center .notification-row .notification-background .notification.critical {
-  border-left: 4px solid @error-red;
+  padding: 0;
+  margin: 0;
 }
 
 .control-center .notification-row .notification-background .notification .notification-content {
-  margin: 4px 8px;
+  margin: 0;
+  padding: 0;
 }
 
 .summary {
   font-family: "Inter Bold";
-  font-size: 1rem;
+  font-size: 0.9rem;
+  color: @text;
 }
 
 .body {
   color: @text-subtle;
-  font-size: 0.85rem;
-  margin-top: 4px;
+  font-size: 0.8rem;
+  margin-top: 2px;
+}
+
+.time {
+  color: alpha(@text, 0.3);
+  font-size: 0.7rem;
 }
 
 .time {
