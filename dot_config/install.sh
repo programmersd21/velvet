@@ -376,7 +376,6 @@ post_install() {
     # ensure all scripts are executable
     chmod +x ~/.config/rofi/wallpaper-picker 2>/dev/null || true
     chmod +x ~/.config/scripts/theme-switch.sh 2>/dev/null || true
-    chmod +x ~/.config/rofi/rofi-wallpaper-picker.sh 2>/dev/null || true
 
     ok "post-install done"
 }
