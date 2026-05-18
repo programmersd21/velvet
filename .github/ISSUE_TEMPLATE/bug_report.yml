@@ -1,0 +1,85 @@
+name: 🐛 Bug Report
+description: Report a bug or issue with Velvet Noir dotfiles
+title: "[BUG]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Thank you for reporting a bug! 
+        Please provide as much detail as possible so we can diagnose and resolve the issue quickly.
+
+  - type: input
+    id: system-info
+    attributes:
+      label: System Specifications
+      placeholder: e.g., Arch Linux, Hyprland v0.39+, AUR Helper (yay/paru), GPU/Drivers
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected Component
+      description: Select the main dotfile component that has an issue.
+      multiple: true
+      options:
+        - Installer script (install.sh)
+        - Theme Syncing (theme-switch.sh / matugen)
+        - Hyprland (binds, windows, animations)
+        - Waybar (floating modules, battery, mpris)
+        - Rofi (wallpaper-picker, launcher)
+        - SwayNC (notifications)
+        - Shell (dot_bashrc / starship prompt)
+        - Other / Unknown
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Explain step-by-step how you encountered the bug.
+      placeholder: |
+        1. Clone repository and run `install.sh`
+        2. Press Super+W to choose wallpaper
+        3. Encounter error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-actual
+    attributes:
+      label: Expected & Actual Behavior
+      description: What did you expect to happen, and what actually happened?
+      placeholder: |
+        Expected: Theme switch updates colors of Rofi and Waybar immediately.
+        Actual: Rofi colors updated, but Waybar threw an error.
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: System/App Logs & Context
+      description: Paste any relevant logs, terminal command outputs, or error messages.
+      placeholder: |
+        Run `chezmoi diff` or copy waybar/hyprland output logs here.
+        ```text
+        paste logs here
+        ```
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklists
+    attributes:
+      label: Validation Checklist
+      description: Please verify you have completed these steps before submitting.
+      options:
+        - label: I have searched open/closed issues to make sure this is not a duplicate.
+          required: true
+        - label: I have updated my system packages and confirmed that core packages are up to date.
+          required: true
+        - label: I ran `chezmoi doctor` and it did not report severe errors.
+          required: false

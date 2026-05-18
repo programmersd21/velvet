@@ -1,70 +1,87 @@
 #!/usr/bin/env bash
-# velvet noir · clipboard manager
 
 export YDOTOOL_SOCKET="$HOME/.ydotool_socket"
 
-tmp_dir="/tmp/cliphist"
-mkdir -p "$tmp_dir"
+TMP_DIR="/tmp/cliphist"
+mkdir -p "$TMP_DIR"
 
-# list clipboard items with square image previews
 get_list() {
     echo "󰒲 Clear All"
-    
-    # cliphist list output uses tab separated: ID\tContent
+
     cliphist list | while IFS=$'\t' read -r id content; do
-        
-        # detect if the item is an image (based on metadata or content type)
-        # binary entries for images show [image/...] in cliphist list
-        if [[ "$content" == *"[[ binary data"* ]]; then
-            icon_path="$tmp_dir/${id}_thumb.png"
-            
-            # generate thumbnail if it doesn't exist
-            if [[ ! -f "$icon_path" ]]; then
-                echo -n "$id" | cliphist decode > /tmp/raw_img_clip.png 2>/dev/null
-                # use imagemagick to create a square thumbnail
-                convert /tmp/raw_img_clip.png -gravity center -extent 1:1 -resize 128x128 "$icon_path" 2>/dev/null
-                rm /tmp/raw_img_clip.png
+        if [[ "$content" == *"binary data"* ]]; then
+            icon="$TMP_DIR/${id}.png"
+
+            if [[ ! -f "$icon" ]]; then
+                echo "$id" | cliphist decode > /tmp/cliphist_raw 2>/dev/null
+
+                magick /tmp/cliphist_raw \
+                    -thumbnail 128x128^ \
+                    -gravity center \
+                    -extent 128x128 \
+                    "$icon" 2>/dev/null
+
+                rm -f /tmp/cliphist_raw
             fi
-            
-            # show icon if available
-            [[ -f "$icon_path" ]] && echo -e "$id\t$content\0icon\x1f$icon_path" || echo -e "$id\t$content"
+
+            if [[ -f "$icon" ]]; then
+                printf "%s\t%s\0icon\x1f%s\n" "$id" "$content" "$icon"
+            else
+                printf "%s\t%s\n" "$id" "$content"
+            fi
         else
-            echo -e "$id\t$content"
+            printf "%s\t%s\n" "$id" "$content"
         fi
     done
 }
 
-# 1. capture selection
-# note: -dmenu requires tab-separated fields for icon support
 PREV_WIN=$(hyprctl activewindow -j | jq -r '.address')
-selection=$(get_list | rofi -dmenu -i -p "CLIP" -show-icons -theme ~/.config/rofi/velvet.rasi)
 
-# 2. exit if nothing selected
-[[ -z "$selection" ]] && exit 0
+SELECTION=$(get_list | rofi \
+    -dmenu \
+    -i \
+    -show-icons \
+    -theme ~/.config/rofi/velvet.rasi \
+    -p "CLIP")
 
-# 3. handle "Clear All"
-if [[ "$selection" == *"Clear All"* ]]; then
+[[ -z "$SELECTION" ]] && exit 0
+
+if [[ "$SELECTION" == *"Clear All"* ]]; then
     cliphist wipe
     notify-send "Clipboard" "History cleared"
     exit 0
 fi
 
-# 4. decode and copy
-echo "$selection" | cliphist decode | wl-copy
+ID=$(printf '%s\n' "$SELECTION" | cut -f1)
 
-# 5. restore focus and wait until compositor confirms it before pasting
-if [[ -n "$PREV_WIN" ]]; then
+printf '%s' "$ID" | cliphist decode | wl-copy
+
+if [[ -n "$PREV_WIN" && "$PREV_WIN" != "null" ]]; then
+    # Save current states
+    WARP_STATE=$(hyprctl getoption cursor:no_warps -j | jq -r '.int')
+    FOLLOW_STATE=$(hyprctl getoption input:follow_mouse -j | jq -r '.int')
+    
+    # Fallback to defaults if empty
+    [[ -z "$WARP_STATE" ]] && WARP_STATE=0
+    [[ -z "$FOLLOW_STATE" ]] && FOLLOW_STATE=1
+    
+    # Disable warping and follow-mouse temporarily so focus remains locked on original window
+    hyprctl keyword cursor:no_warps 1
+    hyprctl keyword input:follow_mouse 0
+    
+    # Force focus back to original window
     hyprctl dispatch focuswindow "address:0x${PREV_WIN#0x}"
-    for i in {1..20}; do
-        current=$(hyprctl activewindow -j | jq -r '.address')
-        [[ "${current#0x}" == "${PREV_WIN#0x}" ]] && break
-        sleep 0.05
-    done
+    
+    # Wait for focus to settle
+    sleep 0.05
 fi
 
 # 6. paste
 ydotool key 29:1 47:1 47:0 29:0
 
-# 7. re-lock focus back on original window so next trigger captures correctly
-sleep 0.05
-[[ -n "$PREV_WIN" ]] && hyprctl dispatch focuswindow "address:0x${PREV_WIN#0x}"
+# 7. restore settings
+if [[ -n "$PREV_WIN" && "$PREV_WIN" != "null" ]]; then
+    sleep 0.05
+    hyprctl keyword cursor:no_warps "$WARP_STATE"
+    hyprctl keyword input:follow_mouse "$FOLLOW_STATE"
+fi

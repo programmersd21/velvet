@@ -1,0 +1,31 @@
+name: Lint & Style Check
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**.sh'
+      - 'dot_config/rofi/wallpaper-picker'
+      - '.github/workflows/lint.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**.sh'
+      - 'dot_config/rofi/wallpaper-picker'
+      - '.github/workflows/lint.yml'
+
+jobs:
+  shellcheck:
+    name: ShellCheck Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          scandir: 'dot_config'
+          additional_files: 'dot_config/rofi/wallpaper-picker'
+        env:
+          SHELLCHECK_OPTS: -e SC2086 -e SC1091 -e SC1090

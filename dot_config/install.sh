@@ -115,14 +115,23 @@ PACMAN_PKGS=(
     # general
     git
     base-devel
-    jq
-    imagemagick
     grim
     slurp
     cliphist
     wl-clipboard
     ydotool
     networkmanager
+
+    # utilities & dependencies
+    ffmpeg
+    p7zip
+    jq
+    poppler
+    fd
+    ripgrep
+    fzf
+    zoxide
+    imagemagick
 )
 
 # aur
@@ -146,7 +155,7 @@ AUR_PKGS=(
     cava
 
     # file manager
-    yazi
+    yazi-nightly-bin
 
     # power menu
     wlogout
