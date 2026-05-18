@@ -30,6 +30,21 @@ velvet noir is a minimalist, dark-glass rice built for speed and aesthetics. it 
 | ![](/screenshots/yazi.png) | ![](/screenshots/btop.png) |
 | *terminal file manager* | *resource monitor* |
 
+| apps menu | emoji picker |
+| :---: | :---: |
+| ![](/screenshots/apps_menu.png) | ![](/screenshots/emoji_menu.png) |
+| *snappy glass launcher* | *quick unicode selector* |
+
+| wallpaper selector | power menu |
+| :---: | :---: |
+| ![](/screenshots/wallpaper_menu.png) | ![](/screenshots/wlogout.png) |
+| *visual theme switcher* | *glass session control* |
+
+| lock screen | |
+| :---: | :---: |
+| ![](/screenshots/hyprlock.png) | |
+| *animated blurred locker* | |
+
 ---
 
 ### features
