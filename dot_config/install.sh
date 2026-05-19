@@ -204,12 +204,7 @@ setup_dotfiles() {
 
     local script_dir
     script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    local src_dir="$script_dir/dot_config"
-
-    if [[ ! -d "$src_dir" ]]; then
-        err "dot_config directory not found at $src_dir"
-        exit 1
-    fi
+    local src_dir="$script_dir"
 
     mkdir -p "$HOME/.config"
 
