@@ -2,6 +2,7 @@
 ### a glass-forward, dynamically themed hyprland experience.
 
 ![demo](/screenshots/demo.gif)
+
 *velvet noir in action: dynamic themes, glassmorphism, and smooth animations.*
 
 [about](#about) • [gallery](#gallery) • [features](#features) • [install](#install)
