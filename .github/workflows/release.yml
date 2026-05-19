@@ -20,7 +20,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG=$(cat version.txt | tr -d '\n')
+          TAG=$(cat VERSION.txt | tr -d '\n')
 
           gh release create "$TAG" release.zip \
             --title "$TAG" \
