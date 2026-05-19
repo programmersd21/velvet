@@ -140,7 +140,7 @@ AUR_PKGS=(
     rofi-wayland
 
     # notification center
-    sway-notification-center
+    swaync
 
     # wallpaper
     swww
@@ -168,7 +168,7 @@ AUR_PKGS=(
     hypridle
 
     # gtk theme
-    adw-gtk3
+    adw-gtk-theme
 
     # cursor
     bibata-cursor-theme-bin
