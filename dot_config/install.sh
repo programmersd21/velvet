@@ -89,6 +89,7 @@ PACMAN_PKGS=(
     # system tools
     btop
     fastfetch
+    rsync
 
     # media & input
     brightnessctl
@@ -120,7 +121,6 @@ PACMAN_PKGS=(
     cliphist
     wl-clipboard
     ydotool
-    networkmanager
 
     # utilities & dependencies
     ffmpeg
@@ -142,8 +142,8 @@ AUR_PKGS=(
     # notification center
     swaync
 
-    # wallpaper
-    swww
+    # wallpaper daemon
+    awww
 
     # color generation
     matugen-bin
@@ -172,9 +172,6 @@ AUR_PKGS=(
 
     # cursor
     bibata-cursor-theme-bin
-
-    # dotfile management
-    chezmoi
 )
 
 install_packages() {
@@ -205,97 +202,49 @@ install_packages() {
 REPO="https://github.com/programmersd21/velvet.git"
 
 setup_dotfiles() {
-    log "setting up dotfiles with chezmoi..."
+    log "syncing dotfiles using rsync..."
 
-    if [[ -d "$HOME/.local/share/chezmoi" ]]; then
-        warn "chezmoi source directory already exists"
-        if ask "overwrite existing dotfiles?"; then
-            chezmoi init --apply --force "$REPO"
-        else
-            log "skipping dotfiles. you can apply later with: chezmoi init --apply $REPO"
-            return
-        fi
+    local repo_dir
+    repo_dir=$(mktemp -d)
+
+    log "cloning repo..."
+    if ! git clone --depth=1 "$REPO" "$repo_dir"; then
+        err "failed to clone $REPO"
+        rm -rf "$repo_dir"
+        exit 1
+    fi
+
+    mkdir -p "$HOME/.config"
+
+    rsync -a --progress \
+        --exclude="install.sh" \
+        --exclude=".git/" \
+        --exclude=".github/" \
+        --exclude="README.md" \
+        --exclude="LICENSE" \
+        "$repo_dir/" "$HOME/.config/"
+
+    # copy ../dot_bashrc (relative to this script) → ~/.bashrc
+    local script_dir
+    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    if [[ -f "$script_dir/../dot_bashrc" ]]; then
+        cp "$script_dir/../dot_bashrc" "$HOME/.bashrc"
+        ok "dot_bashrc copied to ~/.bashrc"
     else
-        chezmoi init --apply --force "$REPO"
+        warn "../dot_bashrc not found — skipping"
     fi
 
-    ok "dotfiles applied"
-}
+    rm -rf "$repo_dir"
 
-# ── machine config ───────────────────────────────────────────────────────────
-setup_machine_data() {
-    local datafile="$HOME/.local/share/chezmoi/.chezmoidata.yaml"
-
-    if [[ -f "$datafile" ]]; then
-        ok "chezmoidata.yaml already exists"
-        return
-    fi
-
-    log "setting up machine-specific config..."
-    echo ""
-
-    # detect primary monitor
-    local mon_name mon_res mon_rate
-    if command -v hyprctl &>/dev/null && hyprctl monitors &>/dev/null 2>&1; then
-        mon_name=$(hyprctl monitors -j 2>/dev/null | jq -r '.[0].name // "eDP-1"')
-        mon_res=$(hyprctl monitors -j 2>/dev/null | jq -r '.[0] | "\(.width)x\(.height)"')
-        mon_rate=$(hyprctl monitors -j 2>/dev/null | jq -r '.[0].refreshRate | floor')
-        log "detected monitor: ${B}$mon_name${R} at ${B}$mon_res@${mon_rate}hz${R}"
-    else
-        mon_name="eDP-1"
-        mon_res="1920x1080"
-        mon_rate="60"
-        warn "could not detect monitor. using defaults: $mon_name $mon_res@${mon_rate}hz"
-    fi
-
-    # laptop detection
-    local is_laptop="false"
-    if [[ -d /sys/class/power_supply/BAT0 ]] || [[ -d /sys/class/power_supply/BAT1 ]]; then
-        is_laptop="true"
-        log "detected: laptop (battery present)"
-    else
-        log "detected: desktop (no battery)"
-    fi
-
-    echo -ne "  ${T}?${R} accept these values? ${D}[y/n]${R} "
-    read -r confirm
-
-    if [[ "$confirm" =~ ^[yY] ]]; then
-        true  # use detected values
-    else
-        echo -ne "  ${T}?${R} monitor name ${D}[$mon_name]${R}: "
-        read -r input; [[ -n "$input" ]] && mon_name="$input"
-
-        echo -ne "  ${T}?${R} resolution ${D}[$mon_res]${R}: "
-        read -r input; [[ -n "$input" ]] && mon_res="$input"
-
-        echo -ne "  ${T}?${R} refresh rate ${D}[$mon_rate]${R}: "
-        read -r input; [[ -n "$input" ]] && mon_rate="$input"
-
-        echo -ne "  ${T}?${R} is laptop ${D}[$is_laptop]${R}: "
-        read -r input; [[ -n "$input" ]] && is_laptop="$input"
-    fi
-
-    cat > "$datafile" <<EOF
-machine:
-  monitor_name: "$mon_name"
-  monitor_res: "$mon_res"
-  monitor_rate: "$mon_rate"
-  is_laptop: $is_laptop
-EOF
-
-    ok "wrote $datafile"
-
-    # re-apply with new data
-    log "re-applying dotfiles with machine data..."
-    chezmoi apply --force
-    ok "dotfiles re-applied"
+    ok "dotfiles synced to ~/.config"
 }
 
 # ── directories ──────────────────────────────────────────────────────────────
 setup_directories() {
     log "creating directories..."
     mkdir -p ~/Pictures/Screenshots
+    mkdir -p "$HOME/.config/wallpapers/calm"
+    mkdir -p "$HOME/.config/wallpapers/others"
     ok "directories ready"
 }
 
@@ -303,29 +252,29 @@ setup_directories() {
 setup_shell() {
     log "verifying shell and config deployment..."
 
-    # .bashrc — managed by chezmoi (dot_bashrc → ~/.bashrc)
+    # .bashrc
     if [[ -f "$HOME/.bashrc" ]] && grep -q 'starship init' "$HOME/.bashrc"; then
         ok ".bashrc deployed (includes starship, fastfetch, aliases)"
     else
-        warn ".bashrc may not have been applied — run 'chezmoi apply' to fix"
+        warn ".bashrc may not have been applied — check ~/.config/.bashrc or re-run rsync"
     fi
 
-    # starship.toml — managed by chezmoi (dot_config/starship/starship.toml → ~/.config/starship/starship.toml)
+    # starship.toml
     if [[ -f "$HOME/.config/starship/starship.toml" ]]; then
         ok "starship.toml in place"
     else
-        warn "starship.toml missing — run 'chezmoi apply' to fix"
+        warn "starship.toml missing — check your repo structure"
     fi
 
-    # scripts — managed by chezmoi (dot_config/scripts/ → ~/.config/scripts/)
+    # scripts
     if [[ -f "$HOME/.config/scripts/theme-switch.sh" ]]; then
         chmod +x "$HOME/.config/scripts/theme-switch.sh"
         ok "theme-switch.sh ready"
     else
-        warn "theme-switch.sh missing — run 'chezmoi apply' to fix"
+        warn "theme-switch.sh missing — check your repo structure"
     fi
 
-    # wallpapers — managed by chezmoi (dot_config/wallpapers/ → ~/.config/wallpapers/)
+    # wallpapers
     local wp_count
     wp_count=$(find "$HOME/.config/wallpapers" -type f \( -name "*.jpg" -o -name "*.png" -o -name "*.webp" -o -name "*.jpeg" \) 2>/dev/null | wc -l)
     if [[ "$wp_count" -gt 0 ]]; then
@@ -335,48 +284,74 @@ setup_shell() {
     fi
 }
 
-# ── bootstrap matugen colors ─────────────────────────────────────────────────
-bootstrap_colors() {
-    log "bootstrapping color scheme with matugen..."
+# ── wallpaper stack: awww + matugen ─────────────────────────────────────────
+set_wallpaper() {
+    local img="$1"
 
-    if ! command -v matugen &>/dev/null; then
-        warn "matugen not found — skipping color bootstrap"
-        warn "run theme-switch.sh manually after installing matugen"
+    if ! command -v awww &>/dev/null; then
+        warn "awww not found — skipping wallpaper"
         return
     fi
 
-    # find a wallpaper to seed the initial palette from ~/.config/wallpapers/
+    # kill any stale daemon before starting fresh
+    pkill awww-daemon 2>/dev/null || true
+    sleep 0.2
+
+    # start daemon detached — survives installer exit
+    awww-daemon >/dev/null 2>&1 & disown
+
+    # give socket time to come up
+    sleep 0.3
+
+    awww img "$img" \
+        --transition-type grow \
+        --transition-duration 1.2 \
+        --transition-fps 60 \
+        --transition-step 6
+
+    ok "wallpaper set: $(basename "$img")"
+
+    if command -v matugen &>/dev/null; then
+        matugen image "$img" -m dark --source-color-index 0
+        ok "matugen theme generated"
+    else
+        warn "matugen not installed — skipping theme generation"
+    fi
+}
+
+bootstrap_colors() {
+    log "bootstrapping wallpaper + color scheme..."
+
     local seed_wallpaper=""
 
-    # prefer a file named default.* if it exists
-    if [[ -f "$HOME/.config/wallpapers/others/default.jpg" ]]; then
+    # prefer specific default if it exists
+    if [[ -f "$HOME/.config/wallpapers/calm/a_beach_with_trees_on_the_side.jpg" ]]; then
+        seed_wallpaper="$HOME/.config/wallpapers/calm/a_beach_with_trees_on_the_side.jpg"
+    elif [[ -f "$HOME/.config/wallpapers/others/default.jpg" ]]; then
         seed_wallpaper="$HOME/.config/wallpapers/others/default.jpg"
     else
-        # pick the first wallpaper from the shipped collection
-        seed_wallpaper=$(find "$HOME/.config/wallpapers" -type f \( -name "*.jpg" -o -name "*.png" -o -name "*.webp" -o -name "*.jpeg" \) 2>/dev/null | head -n 1)
+        seed_wallpaper=$(find "$HOME/.config/wallpapers" -type f \
+            \( -name "*.jpg" -o -name "*.png" -o -name "*.webp" -o -name "*.jpeg" \) \
+            2>/dev/null | head -n 1)
     fi
 
     if [[ -z "$seed_wallpaper" ]]; then
         warn "no wallpaper found to seed colors"
         warn "add images to ~/.config/wallpapers/ then run:"
-        warn "  ~/.config/scripts/theme-switch.sh ~/.config/wallpapers/<image>"
+        warn "  ~/.config/scripts/theme-switch.sh <image>"
         return
     fi
 
-    log "seeding palette from: ${B}$(basename "$seed_wallpaper")${R}"
-    matugen image "$seed_wallpaper" -m dark 2>&1 || {
-        warn "matugen failed — you can re-run later with theme-switch.sh"
-        return
-    }
+    log "seeding from: ${B}$(basename "$seed_wallpaper")${R}"
+    set_wallpaper "$seed_wallpaper"
 
-    ok "color scheme generated — waybar, rofi, kitty, etc. are ready"
+    ok "wallpaper + colors bootstrapped"
 }
 
 # ── ydotool ──────────────────────────────────────────────────────────────────
 setup_ydotool() {
     log "configuring ydotool..."
 
-    # add user to input group
     if id -nG "$USER" | grep -qw input; then
         ok "user already in input group"
     else
@@ -384,18 +359,11 @@ setup_ydotool() {
         ok "added $USER to input group"
     fi
 
-    # ensure uinput loads on boot
     echo "uinput" | sudo tee /etc/modules-load.d/uinput.conf >/dev/null
-
-    # load uinput immediately (no reboot needed for this session)
     sudo modprobe uinput 2>/dev/null || true
-
-    # reload udev rules
     sudo udevadm control --reload-rules >/dev/null 2>&1 || true
     sudo udevadm trigger >/dev/null 2>&1 || true
 
-    # fix socket path — Arch's packaged unit uses /run/user/$UID/.ydotool_socket
-    # which breaks on Hyprland; override to use $HOME/.ydotool_socket instead
     local override_dir="$HOME/.config/systemd/user/ydotool.service.d"
     local override_file="$override_dir/override.conf"
     mkdir -p "$override_dir"
@@ -407,7 +375,6 @@ Environment=YDOTOOL_SOCKET=%h/.ydotool_socket
 EOF
     ok "wrote ydotool socket override"
 
-    # reload systemd and start service with the fixed unit
     systemctl --user daemon-reload
 
     if systemctl --user list-unit-files | grep -q "^ydotool.service"; then
@@ -420,7 +387,6 @@ EOF
         warn "ydotool.service not found — skipping"
     fi
 
-    # verify daemon
     sleep 0.5
     if pgrep -x ydotoold >/dev/null; then
         ok "ydotoold running"
@@ -433,7 +399,6 @@ EOF
 post_install() {
     log "running post-install setup..."
 
-    # set gtk theme
     if command -v gsettings &>/dev/null; then
         gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark' 2>/dev/null || true
         gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark' 2>/dev/null || true
@@ -444,7 +409,6 @@ post_install() {
         ok "gtk settings applied"
     fi
 
-    # ensure all scripts are executable
     chmod +x ~/.config/rofi/wallpaper-picker 2>/dev/null || true
     chmod +x ~/.config/scripts/theme-switch.sh 2>/dev/null || true
     chmod +x ~/.config/scripts/clipboard.sh 2>/dev/null || true
@@ -466,8 +430,7 @@ finish() {
     echo ""
     echo -e "  ${D}useful commands:${R}"
     echo -e "    ${D}hyprctl reload${R}          reload compositor"
-    echo -e "    ${D}chezmoi apply${R}           re-apply dotfiles"
-    echo -e "    ${D}chezmoi diff${R}            preview changes"
+    echo -e "    ${D}rsync -a <repo>/ ~/.config/${R}  re-sync dotfiles"
     echo ""
 }
 
@@ -495,8 +458,6 @@ main() {
     setup_directories
     echo ""
     setup_dotfiles
-    echo ""
-    setup_machine_data
     echo ""
     setup_shell
     echo ""
