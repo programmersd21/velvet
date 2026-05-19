@@ -89,7 +89,7 @@ bind = $mod, E,      exec, kitty -e yazi
 **01. bootstrap (arch only)**
 ```bash
 git clone https://github.com/programmersd21/velvet.git
-cd velvet && chmod +x dot_config/install.sh && ./dot_config/install.sh
+cd velvet && chmod +x dot_config/install.sh && cd dot_config && ./install.sh
 ```
 
 **02. sync colors**
