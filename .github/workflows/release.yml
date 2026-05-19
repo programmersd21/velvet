@@ -9,17 +9,27 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Read version
+        id: version
+        run: |
+          VERSION=$(cat version.txt | tr -d '\n')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Create Zip
         run: |
           git archive --format=zip HEAD -o velvet.zip
 
-      - name: Release
+      - name: Create Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="v${{ github.run_number }}"
-          gh release create "$TAG" velvet.zip --title "Release $TAG" --notes "Automated release of clean configuration files."
+          TAG="${{ steps.version.outputs.version }}"
+          gh release create "$TAG" velvet.zip \
+            --title "Release $TAG" \
+            --notes "Automated release of clean configuration files."
+            
