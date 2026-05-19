@@ -402,6 +402,15 @@ post_install() {
     chmod +x ~/.config/scripts/clipboard.sh 2>/dev/null || true
     chmod +x ~/.config/scripts/mpris.sh 2>/dev/null || true
 
+    # launch waybar in background
+    if command -v waybar &>/dev/null; then
+        pkill waybar 2>/dev/null || true
+        waybar & disown
+        ok "waybar launched in background"
+    else
+        warn "waybar not found — skipping"
+    fi
+
     ok "post-install done"
 }
 
