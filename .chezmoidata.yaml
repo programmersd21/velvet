@@ -1,5 +1,0 @@
-machine:
-  monitor_name: "eDP-1"
-  monitor_res: "1920x1080"
-  monitor_rate: "60"
-  is_laptop: true
