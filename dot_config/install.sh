@@ -199,18 +199,15 @@ install_packages() {
 }
 
 # ── dotfiles ─────────────────────────────────────────────────────────────────
-REPO="https://github.com/programmersd21/velvet.git"
-
 setup_dotfiles() {
     log "syncing dotfiles using rsync..."
 
-    local repo_dir
-    repo_dir=$(mktemp -d)
+    local script_dir
+    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    local src_dir="$script_dir/dot_config"
 
-    log "cloning repo..."
-    if ! git clone --depth=1 "$REPO" "$repo_dir"; then
-        err "failed to clone $REPO"
-        rm -rf "$repo_dir"
+    if [[ ! -d "$src_dir" ]]; then
+        err "dot_config directory not found at $src_dir"
         exit 1
     fi
 
@@ -222,21 +219,17 @@ setup_dotfiles() {
         --exclude=".github/" \
         --exclude="README.md" \
         --exclude="LICENSE" \
-        "$repo_dir/" "$HOME/.config/"
+        "$src_dir/" "$HOME/.config/"
+
+    ok "dotfiles synced to ~/.config"
 
     # copy ../dot_bashrc (relative to this script) → ~/.bashrc
-    local script_dir
-    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     if [[ -f "$script_dir/../dot_bashrc" ]]; then
         cp "$script_dir/../dot_bashrc" "$HOME/.bashrc"
         ok "dot_bashrc copied to ~/.bashrc"
     else
         warn "../dot_bashrc not found — skipping"
     fi
-
-    rm -rf "$repo_dir"
-
-    ok "dotfiles synced to ~/.config"
 }
 
 # ── directories ──────────────────────────────────────────────────────────────
