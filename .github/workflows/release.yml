@@ -1,0 +1,25 @@
+name: Release Zip
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create Zip
+        run: |
+          git archive --format=zip HEAD -o velvet.zip
+
+      - name: Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="v${{ github.run_number }}"
+          gh release create "$TAG" velvet.zip --title "Release $TAG" --notes "Automated release of clean configuration files."
