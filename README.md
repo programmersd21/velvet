@@ -88,7 +88,7 @@ bind = $mod, E,      exec, kitty -e yazi
 
 **01. bootstrap (arch only)**
 ```bash
-git clone https://github.com/programmersd21/velvet.git
+git clone https://github.com/programmersd21/velvet.git # OR download the zip from the releases, extract it and do the same:
 cd velvet && chmod +x dot_config/install.sh && cd dot_config && ./install.sh
 ```
 
